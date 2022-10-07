@@ -1,0 +1,20 @@
+{
+  "columns": [
+    {
+      "id": 1,
+      "name": "TO DO"
+    },
+    {
+      "id": 2,
+      "name": "IN PROGRESS"
+    },
+    {
+      "id": 3,
+      "name": "BLOCKED"
+    },
+    {
+      "id": 4,
+      "name": "DONE"
+    }
+  ]
+}
