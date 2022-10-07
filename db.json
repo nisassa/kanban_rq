@@ -2,19 +2,23 @@
   "columns": [
     {
       "id": 1,
-      "name": "TO DO"
+      "name": "TO DO",
+      "order": 1
     },
     {
       "id": 2,
-      "name": "IN PROGRESS"
+      "name": "IN PROGRESS",
+      "order": 2
     },
     {
       "id": 3,
-      "name": "BLOCKED"
+      "name": "BLOCKED",
+      "order": 0
     },
     {
       "id": 4,
-      "name": "DONE"
+      "name": "DONE",
+      "order": 3
     }
   ]
 }
