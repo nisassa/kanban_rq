@@ -6,6 +6,12 @@ export const endpoints = {
         getAll: () =>
             `${settings.apiUrl}/columns`,
     },
+    tasks: {
+        getAll: () =>
+            `${settings.apiUrl}/tasks`,
+        updateByID: (id) =>
+            `${settings.apiUrl}/tasks/${id}`
+    }
 };
 
 const reactQueryConfig = {

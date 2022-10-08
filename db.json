@@ -3,22 +3,48 @@
     {
       "id": 1,
       "name": "TO DO",
-      "order": 1
+      "order": 1,
+      "color": "gray"
     },
     {
       "id": 2,
       "name": "IN PROGRESS",
-      "order": 2
+      "order": 2,
+      "color": "blue"
     },
     {
       "id": 3,
       "name": "BLOCKED",
-      "order": 0
+      "order": 0,
+      "color": "yellow"
     },
     {
       "id": 4,
       "name": "DONE",
-      "order": 3
+      "order": 3,
+      "color": "green"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "TO DO 1",
+      "column_id": 1
+    },
+    {
+      "id": 2,
+      "title": "TO DO 2",
+      "column_id": 2
+    },
+    {
+      "id": 3,
+      "title": "TO DO 3",
+      "column_id": 3
+    },
+    {
+      "id": 4,
+      "title": "TO DO 4",
+      "column_id": 4
     }
   ]
 }
