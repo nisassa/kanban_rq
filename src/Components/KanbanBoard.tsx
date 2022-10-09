@@ -1,25 +1,39 @@
 import { useKanban } from "../contextProviders/kanbanContext";
 import { Container, SimpleGrid } from '@chakra-ui/react';
 import Column from './column';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {TaskType, ColumnType} from "../types/kanban.interface";
+import _ from "lodash";
 
 export const KanbanBoard = () => {
 
     const kanban = useKanban()
 
+    const {
+        tasks: freshTasks,
+        columns: freshColumns,
+        tasksLoaded,
+        requireTaskRefetch,
+        updateRequireTaskRefetch
+    } = kanban
+
     const [columns, setColumns] = useState<ColumnType[] | null>(null);
     const [allTasks, setAllTasks] = useState<TaskType[] | null>(null);
 
-    if (kanban.columnsLoaded && columns === null) {
-        const {columns} = kanban
-        setColumns(columns)
+    if (tasksLoaded && allTasks == null) {
+        setAllTasks(freshTasks);
     }
 
-    if (kanban.tasksLoaded && allTasks === null) {
-        const {tasks} = kanban
-        setAllTasks(tasks)
+    if (freshColumns && !_.isEqual(columns, freshColumns) ) {
+        setColumns(freshColumns)
     }
+
+    useEffect(() => {
+        if (requireTaskRefetch === true && freshTasks && !_.isEqual(allTasks, freshTasks)) {
+            updateRequireTaskRefetch(false)
+            setAllTasks(freshTasks);
+        }
+    }, [requireTaskRefetch, freshTasks, allTasks]);
 
     const dropTaskFromColumn = useCallback((fromColumnID: number, toColumnID: number, taskId: TaskType['id']) => {
         if (allTasks) {

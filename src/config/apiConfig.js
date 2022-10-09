@@ -5,6 +5,8 @@ export const endpoints = {
     columns: {
         getAll: () =>
             `${settings.apiUrl}/columns`,
+        createTask: () =>
+            `${settings.apiUrl}/tasks`,
     },
     tasks: {
         getAll: () =>

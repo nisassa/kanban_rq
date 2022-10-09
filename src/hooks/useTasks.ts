@@ -23,9 +23,7 @@ const useTasks = () => {
     );
 };
 
-
 const useUpdateTask = (id: number) => {
-    const queryClient = useQueryClient();
     return useMutation<AxiosResponse<unknown>, any, TaskType>(
         (body) =>
             CallApi({
@@ -37,8 +35,28 @@ const useUpdateTask = (id: number) => {
     );
 };
 
+const useDeleteTask = (id: number) => {
+    const queryClient = useQueryClient();
+    return useMutation<AxiosResponse<unknown>, any, void>(
+        () =>
+            CallApi({
+                url: endpoints.tasks.updateByID(id),
+                method: "DELETE",
+                isProtected: false,
+            }),
+            {
+                onSuccess: () => {
+                    return queryClient.invalidateQueries('Tasks');
+                },
+                onError: (e) => {
+                    console.log(e)
+                },
+            }
+    );
+};
 
 export {
     useTasks,
-    useUpdateTask
+    useUpdateTask,
+    useDeleteTask
 };

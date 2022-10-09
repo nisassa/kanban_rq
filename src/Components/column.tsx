@@ -12,6 +12,8 @@ import React from "react";
 import { AddIcon } from '@chakra-ui/icons';
 import Task from './task';
 import { useColumnDrop } from "../hooks/useDragAndDrop";
+import { useCreateTask } from "../hooks/useKanban";
+import { useKanban } from "../contextProviders/kanbanContext";
 
 function Column({
     column,
@@ -20,8 +22,23 @@ function Column({
 }: {
     column: ColumnType,
     tasks: (TaskType | undefined)[] | null,
-    onDropFromColumn: (fromColumnID: number, toColumnID: number, taskId: TaskType['id']) => void
+    onDropFromColumn: (fromColumnID: number, toColumnID: number, taskId: TaskType['id']) => void,
 }) {
+    const kanban = useKanban();
+
+    const { mutateAsync: createTask, isLoading: isCreating } = useCreateTask();
+
+    const createNewTask = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if (!isCreating) {
+            const newTasks = createTask({
+                column_id: column.id,
+                title: "New",
+            })
+            kanban.updateRequireTaskRefetch(true)
+        }
+    }
 
     const { dropRef, isOver } = useColumnDrop(column, onDropFromColumn);
 
@@ -57,7 +74,7 @@ function Column({
                 _hover={{ bgColor: useColorModeValue('gray.200', 'gray.600') }}
                 py={2}
                 variant="solid"
-                // onClick={}
+                onClick={createNewTask}
                 colorScheme="black"
                 aria-label="add-task"
                 icon={<AddIcon />}

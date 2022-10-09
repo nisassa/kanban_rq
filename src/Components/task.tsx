@@ -5,9 +5,10 @@ import _ from 'lodash';
 import { TaskType} from "../types/kanban.interface";
 import React from "react";
 import { Textarea } from '@chakra-ui/react';
-import { useUpdateTask } from "../hooks/useTasks";
+import {useDeleteTask, useUpdateTask} from "../hooks/useTasks";
 import { useEffect } from "react";
-import {useKanban} from "../contextProviders/kanbanContext";
+import { useKanban } from "../contextProviders/kanbanContext";
+import { DeleteIcon } from '@chakra-ui/icons';
 
 type TaskProps = {
     index: number;
@@ -23,6 +24,7 @@ function Task({
     const { tasks: allTasks } = kanban;
 
     const { mutateAsync: updateTask, isLoading: isUpdating } = useUpdateTask(task?.id);
+    const { mutateAsync: deleteTask, isLoading: isDeleting } = useDeleteTask(task?.id);
 
     const handleSwap = (i: number, j: number) => {
         console.log("swap positions")
@@ -41,10 +43,18 @@ function Task({
 
     const { ref, isDragging } = useDragAndDrop<HTMLDivElement>({ task, index: index }, handleSwap);
 
-    const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTitleUpdate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const newTitle = e.target.value;
         updateTask({ ...task, title: newTitle })
     };
+
+    const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (! isDeleting) {
+            deleteTask()
+            kanban.updateRequireTaskRefetch(true);
+        }
+    };
+
 
     return (
         <ScaleFade in={true} unmountOnExit>
@@ -66,6 +76,22 @@ function Task({
                 bgGradient="linear(to-l, #fefcbf, #ec9211)"
                 opacity={isDragging ? 0.5 : 1}
             >
+                <IconButton
+                    position="absolute"
+                    top={0}
+                    right={0}
+                    zIndex={100}
+                    aria-label="delete-task"
+                    size="md"
+                    colorScheme="solid"
+                    color={'gray.700'}
+                    icon={<DeleteIcon />}
+                    opacity={0}
+                    _groupHover={{
+                        opacity: 1,
+                    }}
+                    onClick={handleDelete}
+                />
                 <Textarea
                     value={task.title}
                     fontWeight="semibold"
@@ -77,7 +103,7 @@ function Task({
                     maxH={200}
                     focusBorderColor="none"
                     color="gray.700"
-                    onChange={handleTitleChange}
+                    onChange={handleTitleUpdate}
                 />
             </Box>
         </ScaleFade>

@@ -1,6 +1,6 @@
 import { useColumns } from "../hooks/useKanban";
 import { useTasks } from "../hooks/useTasks";
-import React, { FC, useContext, createContext, Context } from "react";
+import React, {FC, useContext, createContext, Context, useState} from "react";
 import { ColumnType, TaskType } from "../types/kanban.interface";
 
 interface IKanbanContext {
@@ -8,6 +8,9 @@ interface IKanbanContext {
     columnsLoaded: boolean;
     tasks: TaskType[] | null;
     tasksLoaded: boolean;
+    requireTaskRefetch: boolean;
+    refetchTasks?: any;
+    updateRequireTaskRefetch?: any;
 }
 
 export const KanbanContext = createContext<IKanbanContext>(
@@ -15,13 +18,21 @@ export const KanbanContext = createContext<IKanbanContext>(
         columns: null,
         columnsLoaded: false,
         tasks: null,
-        tasksLoaded: false
+        tasksLoaded: false,
+        requireTaskRefetch: false,
     }
 ) as Context<IKanbanContext>;
 
 export const useKanban = () => useContext(KanbanContext);
 
 const KanbanProvider: FC<any> = ({ children }) => {
+
+    const [requireTaskRefetch, setRequireTaskRefetch] = useState(false);
+
+    const updateRequireTaskRefetch = (value: boolean) => {
+        setRequireTaskRefetch(value)
+    }
+
     const {
         data: columns,
         isFetching: isFetchingColumns,
@@ -43,6 +54,9 @@ const KanbanProvider: FC<any> = ({ children }) => {
                 columnsLoaded: !isFetchingColumns && !isLoadingColumns,
                 tasks: tasks,
                 tasksLoaded: !isFetchingTasks && !isLoadingTasks,
+                refetchTasks,
+                requireTaskRefetch,
+                updateRequireTaskRefetch
             }}
         >
             {children}
