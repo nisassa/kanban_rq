@@ -17,7 +17,6 @@ const useColumns = () => {
             const response = await CallApi<IData[]>({
                 url: endpoints.columns.getAll(),
                 method: "GET",
-                isProtected: true,
             });
             return response.data;
         },
@@ -33,7 +32,6 @@ const useCreateTask = () => {
                 url: endpoints.columns.createTask(),
                 method: "POST",
                 data: body,
-                isProtected: false,
             }),
             {
                 onSuccess: () => {

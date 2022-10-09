@@ -15,7 +15,6 @@ const useTasks = () => {
             const response = await CallApi<IData[]>({
                 url: endpoints.tasks.getAll(),
                 method: "GET",
-                isProtected: true,
             });
             return response.data;
         },
@@ -30,7 +29,6 @@ const useUpdateTask = (id: number) => {
                 url: endpoints.tasks.updateByID(id),
                 method: "PUT",
                 data: body,
-                isProtected: false,
             }),
     );
 };
@@ -42,7 +40,6 @@ const useDeleteTask = (id: number) => {
             CallApi({
                 url: endpoints.tasks.updateByID(id),
                 method: "DELETE",
-                isProtected: false,
             }),
             {
                 onSuccess: () => {

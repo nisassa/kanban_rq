@@ -7,7 +7,6 @@ export interface ICallApi extends AxiosRequestConfig {
   data?: unknown;
   params?: Record<string, unknown>;
   timeout?: 30000;
-  isProtected?: boolean;
 }
 
 const CallApi = <T>({
@@ -16,8 +15,7 @@ const CallApi = <T>({
   headers,
   data,
   params,
-  timeout,
-  isProtected = false,
+  timeout
 }: ICallApi) => {
   const config: AxiosRequestConfig = {
     method,
@@ -29,9 +27,6 @@ const CallApi = <T>({
       ...headers,
     },
   };
-  if (!isProtected) {
-    console.log(axios.request(config));
-  }
   return axios.request(config);
 };
 

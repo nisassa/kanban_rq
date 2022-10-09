@@ -4,11 +4,11 @@ import { useDragAndDrop } from '../hooks/useDragAndDrop';
 import _ from 'lodash';
 import { TaskType} from "../types/kanban.interface";
 import React from "react";
-import { Textarea } from '@chakra-ui/react';
 import {useDeleteTask, useUpdateTask} from "../hooks/useTasks";
 import { useEffect } from "react";
 import { useKanban } from "../contextProviders/kanbanContext";
 import { DeleteIcon } from '@chakra-ui/icons';
+import { Text } from '@chakra-ui/react'
 
 type TaskProps = {
     index: number;
@@ -40,13 +40,7 @@ function Task({
         }
     }, [task, allTasks]);
 
-
     const { ref, isDragging } = useDragAndDrop<HTMLDivElement>({ task, index: index }, handleSwap);
-
-    const handleTitleUpdate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const newTitle = e.target.value;
-        updateTask({ ...task, title: newTitle })
-    };
 
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (! isDeleting) {
@@ -54,7 +48,6 @@ function Task({
             kanban.updateRequireTaskRefetch(true);
         }
     };
-
 
     return (
         <ScaleFade in={true} unmountOnExit>
@@ -92,19 +85,13 @@ function Task({
                     }}
                     onClick={handleDelete}
                 />
-                <Textarea
-                    value={task.title}
+                <Text
                     fontWeight="semibold"
-                    cursor="inherit"
                     border="none"
                     p={0}
-                    resize="none"
-                    minH={70}
-                    maxH={200}
-                    focusBorderColor="none"
+                    h={70}
                     color="gray.700"
-                    onChange={handleTitleUpdate}
-                />
+                > {task.title} </Text>
             </Box>
         </ScaleFade>
     );
