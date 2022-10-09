@@ -2,10 +2,12 @@ import {Box, IconButton, ScaleFade} from '@chakra-ui/react';
 import { memo } from 'react';
 import { useDragAndDrop } from '../hooks/useDragAndDrop';
 import _ from 'lodash';
-import {ColumnType, TaskType} from "../types/kanban.interface";
+import { TaskType} from "../types/kanban.interface";
 import React from "react";
 import { Textarea } from '@chakra-ui/react';
-import {useUpdateTask} from "../hooks/useTasks";
+import { useUpdateTask } from "../hooks/useTasks";
+import { useEffect } from "react";
+import {useKanban} from "../contextProviders/kanbanContext";
 
 type TaskProps = {
     index: number;
@@ -17,11 +19,26 @@ function Task({
   task,
 }: TaskProps ) {
 
+    const kanban = useKanban()
+    const { tasks: allTasks } = kanban;
+
+    const { mutateAsync: updateTask, isLoading: isUpdating } = useUpdateTask(task?.id);
+
     const handleSwap = (i: number, j: number) => {
         console.log("swap positions")
     };
 
-    const { mutateAsync: updateTask, isLoading } = useUpdateTask(task?.id);
+    // synchronize server state with the client sate for task
+    useEffect(() => {
+        if (allTasks) {
+            const original = allTasks.find((item) => task.id === item.id);
+            if (original && original.column_id !== task.column_id && !isUpdating) {
+                updateTask(task);
+            }
+        }
+    }, [task, allTasks]);
+
+
     const { ref, isDragging } = useDragAndDrop<HTMLDivElement>({ task, index: index }, handleSwap);
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

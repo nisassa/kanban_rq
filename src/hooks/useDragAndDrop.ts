@@ -27,6 +27,7 @@ export function useDragAndDrop<T extends HTMLElement> (
 
           // the tasks are not on the same column
           if (item.from !== task.column_id) {
+              console.log("te tasks are not from the same column")
               return;
           }
 

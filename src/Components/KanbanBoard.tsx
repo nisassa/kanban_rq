@@ -30,8 +30,6 @@ export const KanbanBoard = () => {
                 });
                 setAllTasks(newTasks)
             }
-
-            // updateTask(movingTask)
         }
     }, [allTasks]);
 

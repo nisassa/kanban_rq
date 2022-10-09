@@ -1,15 +1,13 @@
 import { useColumns } from "../hooks/useKanban";
 import { useTasks } from "../hooks/useTasks";
 import React, { FC, useContext, createContext, Context } from "react";
-import {ColumnType, TaskType} from "../types/kanban.interface";
-import { useUpdateTask } from "../hooks/useTasks";
+import { ColumnType, TaskType } from "../types/kanban.interface";
 
 interface IKanbanContext {
     columns: ColumnType[] | null;
     columnsLoaded: boolean;
     tasks: TaskType[] | null;
     tasksLoaded: boolean;
-    updateTask: (id: TaskType|undefined) => void;
 }
 
 export const KanbanContext = createContext<IKanbanContext>(
@@ -17,14 +15,11 @@ export const KanbanContext = createContext<IKanbanContext>(
         columns: null,
         columnsLoaded: false,
         tasks: null,
-        tasksLoaded: false,
-        updateTask: () => {}
+        tasksLoaded: false
     }
 ) as Context<IKanbanContext>;
 
-
 export const useKanban = () => useContext(KanbanContext);
-
 
 const KanbanProvider: FC<any> = ({ children }) => {
     const {
@@ -41,13 +36,6 @@ const KanbanProvider: FC<any> = ({ children }) => {
         refetch: refetchTasks
     } = useTasks();
 
-    const updateTask = (task: TaskType| undefined) => {
-        const id = task?.id ?? 0
-        // const { mutateAsync: updateTask, isLoading } = useUpdateTask(id);
-        // console.log("context update task")
-        // console.log(task)
-    }
-
     return (
         <KanbanContext.Provider
             value={{
@@ -55,7 +43,6 @@ const KanbanProvider: FC<any> = ({ children }) => {
                 columnsLoaded: !isFetchingColumns && !isLoadingColumns,
                 tasks: tasks,
                 tasksLoaded: !isFetchingTasks && !isLoadingTasks,
-                updateTask,
             }}
         >
             {children}
