@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import { KanbanBoard } from './components/KanbanBoard'
+import { KanbanBoard } from './components/KanbanBoard';
+import { SingleTask } from './components/pages/singleTask';
 import { ChakraProvider } from '@chakra-ui/react'
 import KanbanProvider from "./contextProviders/kanbanContext";
 import { QueryClientProvider } from "react-query";
@@ -32,6 +33,9 @@ function App() {
                         <KanbanBoard/>
                     </DndProvider>
                 } />
+                  <Route path='/task/:id' element={
+                      <SingleTask/>
+                  } />
               </Routes>
             </Router>
           </KanbanProvider>

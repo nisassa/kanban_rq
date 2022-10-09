@@ -13,6 +13,7 @@ export const endpoints = {
             `${settings.apiUrl}/tasks`,
         updateByID: (id) =>
             `${settings.apiUrl}/tasks/${id}`
+
     }
 };
 

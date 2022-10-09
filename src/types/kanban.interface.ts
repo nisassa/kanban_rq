@@ -9,6 +9,7 @@ export interface TaskType {
   id: number;
   title: string;
   column_id: number;
+  column?: ColumnType;
 }
 
 export interface DragItem {

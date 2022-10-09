@@ -1,3 +1,11 @@
+# How To Run The Project
+* >clone the repo 
+* >copy the `env.example` to `.env`
+* >run: `npm install` or `yarn`
+* >run: `yarn serve-json`
+* >start the project: `npm start` or `yarn start`
+  
+  
 # Technical assignment front-end engineer
 Create a minimal Kanban board on which you can create, view and move tickets between columns.
 

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useKanban } from "../contextProviders/kanbanContext";
 import { DeleteIcon } from '@chakra-ui/icons';
 import { Text } from '@chakra-ui/react'
+import { Link } from '@chakra-ui/react'
 
 type TaskProps = {
     index: number;
@@ -36,6 +37,7 @@ function Task({
             const original = allTasks.find((item) => task.id === item.id);
             if (original && original.column_id !== task.column_id && !isUpdating) {
                 updateTask(task);
+                // kanban.updateRequireTaskRefetch(true);
             }
         }
     }, [task, allTasks]);
@@ -85,6 +87,9 @@ function Task({
                     }}
                     onClick={handleDelete}
                 />
+
+                <Link href={`/task/${task.id}`}>Go To Task</Link>
+
                 <Text
                     fontWeight="semibold"
                     border="none"

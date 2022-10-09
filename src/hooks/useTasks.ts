@@ -23,6 +23,7 @@ const useTasks = () => {
 };
 
 const useUpdateTask = (id: number) => {
+    const queryClient = useQueryClient();
     return useMutation<AxiosResponse<unknown>, any, TaskType>(
         (body) =>
             CallApi({
@@ -30,6 +31,14 @@ const useUpdateTask = (id: number) => {
                 method: "PUT",
                 data: body,
             }),
+            {
+                onSuccess: () => {
+                    return queryClient.invalidateQueries('Tasks');
+                },
+                onError: (e) => {
+                    console.log(e)
+                },
+            }
     );
 };
 
@@ -52,8 +61,20 @@ const useDeleteTask = (id: number) => {
     );
 };
 
+const useSingleTask = (id: number) => {
+    return useQuery<any>(`getSingleTask`, async () => {
+        return await CallApi<any>({
+            url: endpoints.tasks.updateByID(id),
+            method: "GET",
+        })
+            .then(({ data }) => data)
+            .catch((err) => err);
+    });
+};
+
 export {
     useTasks,
     useUpdateTask,
-    useDeleteTask
+    useDeleteTask,
+    useSingleTask
 };
